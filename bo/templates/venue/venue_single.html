@@ -1,0 +1,119 @@
+{% extends "venue/venue_sub.html" %}
+<!-- Title of the page (what goes on the tab when rendered) -->
+{% block title %}
+{% for venue in venues %}
+{{venue.name}} Profile
+{% endfor %}
+{% endblock %}
+
+<!-- Specific Style to this page -->
+{% block style %}
+{% endblock %}
+
+<!-- Any Submenus go here -->
+{% block action_items %}
+<button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Add New
+    Person</button>
+Edit this record
+{% endblock %}
+
+<!-- Additional Menu Items on the bottom nav bar -->
+{% block additional_menuitems %}
+{% endblock %}
+
+<!-- Main Content -->
+{% block content %}
+{% for venue in venues %}
+{% for state in states %}
+{% if state.id == venue.state %}
+<h2>{{venue.name}}</h2>
+<h5>{{venue.address}} {{venue.city}} {{state.abr}} {{venue.zip}}</h5>
+<h5><a href="tel:{{venue.phone}}" class="text-black text-decoration-none">{{venue.phone}}</a></h5>
+<h5><a href="{{venue.website}}" target="_blank" class="text-black text-decoration-none">{{venue.website}}</a></h5>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>People</h4>
+            <table class="table table-responsive-md">
+                <thead>
+                    <tr>
+                        <td>Role</td>
+                        <td>Name</td>
+                        <td>Phone</td>
+                        <td>Email</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for people in peoples %}
+                    <tr>
+                        <td>{{people.role}}</td>
+                        <td>{{people.fname}} {{people.lname}}</td>
+                        <td>{{people.phone}}</td>
+                        <td>{{people.email}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h4>Clients</h4>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+{% endfor %}
+
+<!-- Modal -->
+{% for venue in venues %}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add A New Person</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{url_for('venue.venuesingle', id=venue.id)}}" method="post" class="row">
+                    <input type="hidden" name="addpeople" value="addpeople">
+                    <div class="col-md-4">
+                        <label class="form-label" for="fname">First Name</label>
+                        <input class="form-control" type="text" name="fname" id="fname">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="lname">Last Name</label>
+                        <input class="form-control" type="text" name="lname" id="lname">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="role">Role</label>
+                        <input class="form-control" type="text" name="role" id="role" , list="roles">
+                        <datalist id="roles">
+                            {% for role in roles %}
+                            <option>{{role[0]}}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="phone">Phone Number</label>
+                        <input class="form-control" type="tel" name="phone" id="phone">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input class="form-control" type="email" name="email" id="email">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+<!-- Scripts needed for this page -->
+{% block scripts %}
+{% endblock %}

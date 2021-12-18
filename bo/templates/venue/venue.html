@@ -1,0 +1,114 @@
+{% extends "venue/venue_sub.html" %}
+<!-- Title of the page (what goes on the tab when rendered) -->
+{% block title %}
+Clients
+{% endblock %}
+
+<!-- Specific Style to this page -->
+{% block style %}
+{% endblock %}
+
+<!-- Any Submenus go here -->
+{% block action_items %}
+<button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Add New
+    Venue</button>
+{% endblock %}
+
+<!-- Additional Menu Items on the bottom nav bar -->
+{% block additional_menuitems %}
+{% endblock %}
+
+<!-- Main Content -->
+{% block content %}
+Venues
+
+<table class="table table-responsive-md table-sm border-secondary">
+    {% for venue in venues %}
+    <tr>
+        <td><a href="{{url_for('venue.venuesingle', id=venue.id)}}" class="text-black text-decoration-none"><strong>{{venue.name}}</strong></a>
+            {% for state in states %}
+            {% if state.id == venue.state %}
+        <td>{{venue.address}} <br>
+            {{venue.city}}, {{state.abr}} {{venue.zip}}</td>
+        {% endif %}
+        {% endfor %}
+        <td><a href="tel:{{venue.phone}}" class="text-black text-decoration-none">{{venue.phone}}</a></td>
+        <td><a href="{{venue.website}}" class="text-black text-decoration-none">{{venue.website}}</a></td>
+        <td>
+            <a class="btn text-primary" href="{{url_for('venue.venueedit', id=venue.id)}}"><i
+                    class="fas fa-edit"></i></a>
+            <a href="{{url_for('venue.venuedelete', id=venue.id)}}" class="btn text-danger"><i
+                    class="fas fa-trash-alt"></i></a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add A New Venue</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{url_for('venue.venuelist')}}" method="post" class="row form-floating">
+                    <div class="col-sm-12">
+                        <label class="form-label" for="name">Name of Venue</label>
+                        <input class="form-control" type="text" name="name" id="name">
+                    </div>
+                    <div class="col-sm-5">
+                        <label class="form-label" for="address">Address</label>
+                        <input class="form-control" type="text" name="address" id="address">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label" for="city">City</label>
+                        <input class="form-control" type="text" name="city" id="city" list="cities">
+                        <datalist id="cities">
+                            {% for city in cities %}
+                            <option>{{city.city}}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="form-label" for="state">State</label>
+                            <select id="state" class="form-control" name="state">
+                                {% for state in states %}
+                                <option value="{{state.id}}">{{state.abr}}-{{state.state}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="form-label" for="zip">Zip</label>
+                        <input class="form-control" type="text" name="zip" id="zip">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="phone">Phone Number</label>
+                        <input class="form-control" type="tel" name="phone" id="phone">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="website">Website</label>
+                        <input class="form-control" type="url" name="website" id="website">
+                    </div>
+                    <div class="col-sm-12">
+                        <label class="form-label" for="loadinst">Loading Instructions</label>
+                        <textarea class="form-control" name="loadinst" id="loadinst" rows=5></textarea>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add Venue</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Scripts needed for this page -->
+{% block scripts %}
+{% endblock %}

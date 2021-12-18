@@ -1,0 +1,97 @@
+{% extends "clients/clients_sub.html" %}
+<!-- Title of the page (what goes on the tab when rendered) -->
+{% block title %}
+{% for client in clients %}
+Edit {{client.fname}} {{client.lname}} - {{client.company}}
+{% endfor %}
+{% endblock %}
+
+<!-- Specific Style to this page -->
+{% block style %}
+{% endblock %}
+
+<!-- Any Submenus go here -->
+{% block action_items %}
+{% endblock %}
+
+<!-- Additional Menu Items on the bottom nav bar -->
+{% block additional_menuitems %}
+{% endblock %}
+
+<!-- Main Content -->
+{% block content %}
+{% for client in clients %}
+Client {{client.fname}} {{client.lname}} - {{client.company}}
+
+
+<form action="{{url_for('client.clientedit', id=client.id)}}" method="post" class="row">
+    <div class="col-sm-12">
+        <label class="form-label" for="company">Company</label>
+        <input class="form-control" type="text" name="company" id="company" value="{{client.company}}">
+    </div>
+    <div class="col-sm-6">
+        <label class="form-label" for="fname">First Name</label>
+        <input class="form-control" type="text" name="fname" id="fname" value="{{client.fname}}">
+    </div>
+    <div class="col-sm-6">
+        <label class="form-label" for="lname">Last Name</label>
+        <input class="form-control" type="text" name="lname" id="lname" value="{{client.lname}}">
+    </div>
+    <div class="col-sm-5">
+        <label class="form-label" for="address">Address</label>
+        <input class="form-control" type="text" name="address" id="address" value="{{client.address}}">
+    </div>
+    <div class="col-sm-3">
+        <label class="form-label" for="city">City</label>
+        <input class="form-control" type="text" name="city" id="city" list="cities" value="{{client.city}}">
+        <datalist id="cities">
+            {% for city in cities %}
+            <option>{{city.city}}</option>
+            {% endfor %}
+        </datalist>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label class="form-label" for="state">State</label>
+            <select id="state" class="form-control" name="state">
+                {% for state in states %}
+                {% if state.id == client.state %}
+                <option selected value="{{state.id}}">{{state.abr}}-{{state.state}}</option>
+                {% else %}
+                <option value="{{state.id}}">{{state.abr}}-{{state.state}}</option>
+
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <label class="form-label" for="zip">Zip</label>
+        <input class="form-control" type="text" name="zip" id="zip" value="{{client.zip}}">
+    </div>
+    <div class="col-sm-4">
+        <label class="form-label" for="phone">Phone Number</label>
+        <input class="form-control" type="tel" name="phone" id="phone" value="{{client.phone}}">
+    </div>
+    <div class="col-sm-4">
+        <label class="form-label" for="fax">Cell Number</label>
+        <input class="form-control" type="tel" name="cell" id="cell" value="{{client.mobile}}">
+    </div>
+    <div class="col-sm-4">
+        <label class="form-label" for="fax">Fax Number</label>
+        <input class="form-control" type="tel" name="fax" id="fax" value="{{client.fax}}">
+    </div>
+    <div class="col-sm-12">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-control" type="email" name="email" id="email" value="{{client.email}}">
+    </div>
+    <div class="col-sm-3">
+        <button type="submit" class="btn btn-primary">Edit Client</button>
+    </div>
+</form>
+{% endfor %}
+{% endblock %}
+
+<!-- Scripts needed for this page -->
+{% block scripts %}
+{% endblock %}
