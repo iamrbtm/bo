@@ -1,0 +1,192 @@
+{% extends "venue/venue_sub.html" %}
+<!-- Title of the page (what goes on the tab when rendered) -->
+{% block title %}
+{% for venue in venues %}
+{{venue.name}} clients
+{% endfor %}
+{% endblock %}
+
+<!-- Any Submenus go here -->
+{% block action_items %}
+{% for venue in venues %}
+<button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#person">Add New
+    Person</button>
+<button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#seating">Add Seating Configuration</button>
+
+<a href="{{url_for('venue.venuedelete', id = venue.id)}}" class="dropdown-item">Delete {{venue.name}}</a>    
+{% endfor %}
+{% endblock %}
+
+<!-- Additional Menu Items on the bottom nav bar -->
+{% block additional_menuitems %}
+<div class="nav nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
+    <button class="nav-link active" id="v-pills-people-tab" data-bs-toggle="pill" data-bs-target="#v-pills-people" type="button" role="tab" aria-controls="v-pills-people" aria-selected="false">People</button>
+    <button class="nav-link" id="v-pills-clients-tab" data-bs-toggle="pill" data-bs-target="#v-pills-clients" type="button" role="tab" aria-controls="v-pills-clients" aria-selected="false">Clients</button>
+    <button class="nav-link" id="v-pills-events-tab" data-bs-toggle="pill" data-bs-target="#v-pills-events" type="button" role="tab" aria-controls="v-pills-events" aria-selected="false">Events</button>
+    <button class="nav-link" id="v-pills-seating-tab" data-bs-toggle="pill" data-bs-target="#v-pills-seating" type="button" role="tab" aria-controls="v-pills-seating" aria-selected="false">Seating</button>
+  </div>
+  
+{% endblock %}
+
+<!-- Main Content -->
+{% block content %}
+{% for venue in venues %}
+{% for state in states %}
+{% if state.id == venue.state %}
+<h2>{{venue.name}}</h2>
+<h5>{{venue.address}} {{venue.city}}, {{state.abr}} {{venue.zip}}</h5>
+<h5><a href="tel:{{venue.phone}}" class="text-black text-decoration-none">{{venue.phone}}</a></h5>
+<h5><a href="{{venue.website}}" target="_blank" class="text-black text-decoration-none">{{venue.website}}</a></h5>
+{% endif %}
+{% endfor %}
+{% endfor %}
+
+<div class="d-flex align-items-start pt-3">
+    <!-- <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <button class="nav-link active" id="v-pills-people-tab" data-bs-toggle="pill" data-bs-target="#v-pills-people" type="button" role="tab" aria-controls="v-pills-people" aria-selected="true">People</button>
+      <button class="nav-link" id="v-pills-clients-tab" data-bs-toggle="pill" data-bs-target="#v-pills-clients" type="button" role="tab" aria-controls="v-pills-clients" aria-selected="false">Clients</button>
+      <button class="nav-link" id="v-pills-events-tab" data-bs-toggle="pill" data-bs-target="#v-pills-events" type="button" role="tab" aria-controls="v-pills-events" aria-selected="false">Events</button>
+      <button class="nav-link" id="v-pills-seating-tab" data-bs-toggle="pill" data-bs-target="#v-pills-seating" type="button" role="tab" aria-controls="v-pills-seating" aria-selected="false">Seating</button>
+    </div> -->
+    <div class="tab-content shadow p-3 mb-5 bg-light rounded" id="v-pills-tabContent">
+      <div class="tab-pane fade show active" id="v-pills-people" role="tabpanel" aria-labelledby="v-pills-people-tab">
+        <h4>People</h4>
+        <table class="table table-responsive-md">
+            <thead>
+                <tr>
+                    <td>Name / Role</td>
+                    <td>Phone</td>
+                    <td>Email</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for people in peoples %}
+                <tr>
+                    <td>
+                        {{people.fname}} {{people.lname}} <br>
+                        <span class="small text-muted">{{people.role}}</span>
+                    </td>
+                    <td>
+                        {% if people.phone %}
+                        <a href="tel:{{people.phone}}" class="btn btn-lg"><i class="fas fa-phone-alt"></i></a>
+
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if people.email %}
+                        <a href="mailto:{{people.email}}" class="btn btn-lg"><i class="fas fa-envelope"></i></a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+      <div class="tab-pane fade" id="v-pills-clients" role="tabpanel" aria-labelledby="v-pills-clients-tab">
+        <h4>Clients</h4>
+        </div>
+      <div class="tab-pane fade" id="v-pills-events" role="tabpanel" aria-labelledby="v-pills-events-tab">
+        <h4>Events</h4>
+        </div>
+      <div class="tab-pane fade" id="v-pills-seating" role="tabpanel" aria-labelledby="v-pills-seating-tab">
+        <h4>Seating</h4>
+        <table class="table table-responsive-md table-sm">
+            <thead>
+                <tr>
+                    <td>Type</td>
+                    <td>Compasity</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for seat in seats %}
+                <tr>
+                    <td>{{seat.seating_type}}</td>
+                    <td>{{seat.seating}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+  </div>
+
+<!-- People -->
+{% for venue in venues %}
+<div class="modal fade" id="person" tabindex="-1" aria-labelledby="personLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="personLabel">Add A New Person</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{url_for('venue.venuesingle', id=venue.id)}}" method="post" class="row">
+                    <input type="hidden" name="addpeople" value="addpeople">
+                    <div class="col-md-4">
+                        <label class="form-label" for="fname">First Name</label>
+                        <input class="form-control" type="text" name="fname" id="fname">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="lname">Last Name</label>
+                        <input class="form-control" type="text" name="lname" id="lname">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" for="role">Role</label>
+                        <input class="form-control" type="text" name="role" id="role" , list="roles">
+                        <datalist id="roles">
+                            {% for role in roles %}
+                            <option>{{role[0]}}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="phone">Phone Number</label>
+                        <input class="form-control" type="tel" name="phone" id="phone">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input class="form-control" type="email" name="email" id="email">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+  <!-- Seating -->
+  <div class="modal fade" id="seating" tabindex="-1" aria-labelledby="seatingLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="seatingLabel">Add New Seating Configuration</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" class="row">
+                <input type="hidden" name="addseat" value="addseat">
+                <div class="col-sm-12">
+                    <label class="form-label" for="type">Type of Configuration</label>
+                    <input class="form-control" type="text" name="type" id="type">
+                </div>
+                <div class="col-sm-12">
+                    <label class="form-label" for="seating">Seating Compasity</label>
+                    <input class="form-control" type="number" name="seating" id="seating">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add Configuration</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+<!-- Scripts needed for this page -->
+{% block scripts %}
+{% endblock %}

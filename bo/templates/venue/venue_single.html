@@ -2,7 +2,7 @@
 <!-- Title of the page (what goes on the tab when rendered) -->
 {% block title %}
 {% for venue in venues %}
-{{venue.name}} Profile
+{{venue.name}} clients
 {% endfor %}
 {% endblock %}
 
@@ -11,9 +11,10 @@
 {% for venue in venues %}
 <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#person">Add New
     Person</button>
-<button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#seating">Add Seating Configuration</button>
+<button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#seating">Add Seating
+    Configuration</button>
 
-<a href="{{url_for('venue.venuedelete', id = venue.id)}}" class="dropdown-item">Delete {{venue.name}}</a>    
+<a href="{{url_for('venue.venuedelete', id = venue.id)}}" class="dropdown-item">Delete {{venue.name}}</a>
 {% endfor %}
 {% endblock %}
 
@@ -30,74 +31,105 @@
 <h5>{{venue.address}} {{venue.city}}, {{state.abr}} {{venue.zip}}</h5>
 <h5><a href="tel:{{venue.phone}}" class="text-black text-decoration-none">{{venue.phone}}</a></h5>
 <h5><a href="{{venue.website}}" target="_blank" class="text-black text-decoration-none">{{venue.website}}</a></h5>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-3">
-            <h4>People</h4>
-            <table class="table table-responsive-md">
-                <thead>
-                    <tr>
-                        <td>Name / Role</td>
-                        <td>Phone</td>
-                        <td>Email</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for people in peoples %}
-                    <tr>
-                        <td>
-                            {{people.fname}} {{people.lname}} <br>
-                            <span class="small text-muted">{{people.role}}</span>
-                        </td>
-                        <td>
-                            {% if people.phone %}
-                            <a href="tel:{{people.phone}}" class="btn btn-lg"><i class="fas fa-phone-alt"></i></a>
-
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if people.email %}
-                            <a href="mailto:{{people.email}}" class="btn btn-lg"><i class="fas fa-envelope"></i></a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-3">
-            <h4>Clients</h4>
-        </div>
-        <div class="col-md-3">
-            <h4>Events</h4>
-        </div>
-        <div class="col-md-3">
-            <h4>Seating</h4>
-            <table class="table table-responsive-md table-sm">
-                <thead>
-                    <tr>
-                        <td>Type</td>
-                        <td>Compasity</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for seat in seats %}
-                    <tr>
-                        <td>{{seat.seating_type}}</td>
-                        <td>{{seat.seating}}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
 {% endif %}
 {% endfor %}
 {% endfor %}
 
-<!-- Modal -->
+<div class="card-group">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">People</h5>
+            <p class="card-text">
+                <table class="table table-responsive-md">
+                    <thead>
+                        <tr>
+                            <td>Name / Role</td>
+                            <td>Phone</td>
+                            <td>Email</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for people in peoples %}
+                        <tr>
+                            <td>
+                                {{people.fname}} {{people.lname}} <br>
+                                <span class="small text-muted">{{people.role}}</span>
+                            </td>
+                            <td>
+                                {% if people.phone %}
+                                <a href="tel:{{people.phone}}" class="btn btn-lg"><i class="fas fa-phone-alt"></i></a>
+
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if people.email %}
+                                <a href="mailto:{{people.email}}" class="btn btn-lg"><i class="fas fa-envelope"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Last updated {{peoplelastupdate.strftime("%m-%d-%y %I:%M %p")}}</small>
+        </div>
+    </div>
+    <div class="card">
+
+        <div class="card-body">
+            <h5 class="card-title">Clients</h5>
+            <p class="card-text">
+                ...
+            </p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Last updated 3 mins ago</small>
+        </div>
+    </div>
+    <div class="card">
+
+        <div class="card-body">
+            <h5 class="card-title">Events</h5>
+            <p class="card-text">
+                ...
+            </p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Last updated 3 mins ago</small>
+        </div>
+    </div>
+    <div class="card">
+
+        <div class="card-body">
+            <h5 class="card-title">Seating</h5>
+            <p class="card-text">
+                <table class="table table-responsive-md table-sm">
+                    <thead>
+                        <tr>
+                            <td>Type</td>
+                            <td>Compasity</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for seat in seats %}
+                        <tr>
+                            <td>{{seat.seating_type}}</td>
+                            <td>{{seat.seating}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Last updated {{seatinglastupdate.strftime("%m-%d-%y %I:%M %p")}}</small>
+        </div>
+    </div>
+</div>
+
+<!-- People -->
 {% for venue in venues %}
 <div class="modal fade" id="person" tabindex="-1" aria-labelledby="personLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -145,36 +177,35 @@
 </div>
 {% endfor %}
 
-  <!-- Seating -->
-  <div class="modal fade" id="seating" tabindex="-1" aria-labelledby="seatingLabel" aria-hidden="true">
+<!-- Seating -->
+<div class="modal fade" id="seating" tabindex="-1" aria-labelledby="seatingLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="seatingLabel">Add New Seating Configuration</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form method="post" class="row">
-                <input type="hidden" name="addseat" value="addseat">
-                <div class="col-sm-12">
-                    <label class="form-label" for="type">Type of Configuration</label>
-                    <input class="form-control" type="text" name="type" id="type">
-                </div>
-                <div class="col-sm-12">
-                    <label class="form-label" for="seating">Seating Compasity</label>
-                    <input class="form-control" type="number" name="seating" id="seating">
-                </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="seatingLabel">Add New Seating Configuration</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" class="row">
+                    <input type="hidden" name="addseat" value="addseat">
+                    <div class="col-sm-12">
+                        <label class="form-label" for="type">Type of Configuration</label>
+                        <input class="form-control" type="text" name="type" id="type">
+                    </div>
+                    <div class="col-sm-12">
+                        <label class="form-label" for="seating">Seating Compasity</label>
+                        <input class="form-control" type="number" name="seating" id="seating">
+                    </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Add Configuration</button>
             </div>
-        </form>
-      </div>
+            </form>
+        </div>
     </div>
-  </div>
+</div>
 {% endblock %}
-
 <!-- Scripts needed for this page -->
 {% block scripts %}
 {% endblock %}

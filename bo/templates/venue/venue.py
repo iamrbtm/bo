@@ -49,6 +49,11 @@ def venuesingle(id):
     peoples = db.session.query(People).filter(People.venuefk == id).all()
     roles = db.session.query(People.role).distinct(People.role).order_by(People.role).all()
     seats = db.session.query(SeatingCompasity).filter_by(venuefk = id).all()
+    peoplelastupdate = db.session.query(func.max(People.update_time).label('updatemax')).filter(People.venuefk == id).scalar()
+    seatinglastupdate = db.session.query(func.max(SeatingCompasity.update_time).label('updatemax')).filter(People.venuefk == id).scalar()
+
     context ={'user':User, 'states':states, 'venues':venues, 
-              'peoples':peoples, 'roles':roles, 'seats':seats}
+              'peoples':peoples, 'roles':roles, 'seats':seats,
+              'peoplelastupdate':peoplelastupdate,
+              'seatinglastupdate':seatinglastupdate}
     return render_template('venue/venue_single.html', **context)
