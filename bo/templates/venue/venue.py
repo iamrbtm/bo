@@ -22,7 +22,11 @@ def venuelist():
 
 @venue.route('venuedelete/<id>', methods=['GET','POST'])
 def venuedelete(id):
-    pass
+    db.session.query(People).filter_by(venuefk=id).delete()
+    db.session.query(SeatingCompasity).filter_by(venuefk=id).delete()
+    db.session.query(Venue).filter_by(id=id).delete()
+    db.session.commit()
+    return redirect ('venue.venuesingle', id=id)
 
 @venue.route('venueedit/<id>', methods=['GET','POST'])
 def venueedit(id):
@@ -35,12 +39,16 @@ def venuesingle(id):
         print(all)
         if 'addpeople' in all:
             people_add(id, **all)
+        
+        if 'addseat' in all:
+            seating_add(id, **all)
 
     
     states = db.session.query(States).all()
     venues = db.session.query(Venue).filter_by(id=id).all()
     peoples = db.session.query(People).filter(People.venuefk == id).all()
     roles = db.session.query(People.role).distinct(People.role).order_by(People.role).all()
+    seats = db.session.query(SeatingCompasity).filter_by(venuefk = id).all()
     context ={'user':User, 'states':states, 'venues':venues, 
-              'peoples':peoples, 'roles':roles}
+              'peoples':peoples, 'roles':roles, 'seats':seats}
     return render_template('venue/venue_single.html', **context)

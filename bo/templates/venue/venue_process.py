@@ -30,3 +30,14 @@ def venue_add(name, address, city, state, zip, phone, website, loadinst):
     )
     db.session.add(new)
     db.session.commit()
+    
+def seating_add(id, type, seating, addseat):
+    new = SeatingCompasity(
+        seating = seating,
+        seating_type = type,
+        venuefk = id,
+        userid = current_user.id
+    )
+    db.session.add(new)
+    db.session.commit()
+    

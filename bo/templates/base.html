@@ -18,25 +18,41 @@
   <title>{% block title %}{% endblock %}</title>
 
   <style>
+    body {
+      background-color: #fbf4e7;
+    }
+    .navbar-sub-customclass {
+      background-color: #6A5325;
+    }
+
     .navbar-customclass {
-      background-color: #303739;
+      background-color: #253C6A;
     }
 
     /* changing brand text color*/
     .navbar-customclass .navbar-brand,
-    .navbar-customclass .navbar-text {
+    .navbar-customclass .navbar-text,
+    .navbar-sub-customclass .navbar-brand,
+    .navbar-sub-customclass .navbar-text {
       color: #ffffff;
     }
 
     /* navigation link text color */
-    .navbar-customclass .navbar-nav .nav-link {
+    .navbar-customclass .navbar-nav .nav-link,
+    .navbar-sub-customclass .navbar-nav .nav-link {
       color: rgba(255, 255, 255, .6);
     }
 
     /* navigation links anchor hover and active styles */
     .navbar-customclass .nav-item.active .nav-link,
-    .navbar-customclass .nav-item:hover .nav-link {
+    .navbar-customclass .nav-item:hover .nav-link,
+    .navbar-sub-customclass .nav-item.active .nav-link,
+    .navbar-sub-customclass .nav-item:hover .nav-link{
       color: #ffffff;
+    }
+
+    #dropdownUser1 {
+      color: rgba(255, 255, 255, .6);
     }
   </style>
   {% block style %}{% endblock %}
