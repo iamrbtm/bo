@@ -40,11 +40,14 @@ def create_app():
     from bo.auth import auth
     from bo.templates.promotors.promotors import promotor
     from bo.templates.venue.venue import venue
+    from bo.templates.event.event import events
 
     app.register_blueprint(views, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
     app.register_blueprint(promotor, url_prefix="/promotors")
     app.register_blueprint(venue, url_prefix="/venue")
+    app.register_blueprint(events, url_prefix="/events")
+
 
     from bo.models import User
 

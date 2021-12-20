@@ -36,95 +36,121 @@
 {% endfor %}
 {% endfor %}
 
+<div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4 text-center">
+    <div class="col">
+        <div class="card shadow-sm p-3 mb-5 bg-white rounded">
+            <div class="card-header">
+                <h5>People</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-responsive-md">
+                    <thead>
+                        <tr>
+                            <td>Name / Role</td>
+                            <td>Phone</td>
+                            <td>Email</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for people in peoples %}
+                        <tr>
+                            <td>
+                                {{people.fname}} {{people.lname}} <br>
+                                <span class="small text-muted">{{people.role}}</span>
+                            </td>
+                            <td>
+                                {% if people.phone %}
+                                <a href="tel:{{people.phone}}" class="btn btn-lg"><i class="fas fa-phone-alt"></i></a>
 
-<div class="d-flex flex-column bd-highlight mb-3" id="people">
-    <h4>People</h4>
-    <table class="table table-responsive-md">
-        <thead>
-            <tr>
-                <td>Name / Role</td>
-                <td>Phone</td>
-                <td>Email</td>
-            </tr>
-        </thead>
-        <tbody>
-            {% for people in peoples %}
-            <tr>
-                <td>
-                    {{people.fname}} {{people.lname}} <br>
-                    <span class="small text-muted">{{people.role}}</span>
-                </td>
-                <td>
-                    {% if people.phone %}
-                    <a href="tel:{{people.phone}}" class="btn btn-lg"><i class="fas fa-phone-alt"></i></a>
-
-                    {% endif %}
-                </td>
-                <td>
-                    {% if people.email %}
-                    <a href="mailto:{{people.email}}" class="btn btn-lg"><i class="fas fa-envelope"></i></a>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <div id="Seating">
-        <h4 class="card-title">Seating</h4>
-        <table class="table table-responsive-md table-sm">
-            <thead>
-                <tr>
-                    <td>Type</td>
-                    <td>Compasity</td>
-                </tr>
-            </thead>
-            <tbody>
-                {% for seat in seats %}
-                <tr>
-                    <td>{{seat.seating_type}}</td>
-                    <td>{{seat.seating}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if people.email %}
+                                <a href="mailto:{{people.email}}" class="btn btn-lg"><i class="fas fa-envelope"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-</div>
-<div class="col-md-6 p-5" id="promotor">
-    <h4>Promotors</h4>
-    <table class="table table-responsive-md">
-        <thead>
-            <tr>
-                <th>Company & Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for promotor in promotors %}
-            <tr>
-                <td>
-                    <strong>{{promotor.company}}</strong> <br>
-                    <span class="small">{{promotor.fname}} {{promotor.lname}}</span>
-                </td>
-                <td>
-                    {% if promotor.phone %}
-                    <a href="tel:{{promotor.phone}}" class="btn btn-lg"><i class="fas fa-phone-alt"></i></a>
+    <div class="col">
+        <div class="card shadow-sm p-3 mb-5 bg-white rounded">
+            <div class="card-header">
+                <h5>Promotors</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-responsive-md">
+                    <thead>
+                        <tr>
+                            <th>Company & Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for promotor in promotors %}
+                        <tr>
+                            <td>
+                                <strong>{{promotor.company}}</strong> <br>
+                                <span class="small">{{promotor.fname}} {{promotor.lname}}</span>
+                            </td>
+                            <td>
+                                {% if promotor.phone %}
+                                <a href="tel:{{promotor.phone}}" class="btn btn-lg"><i class="fas fa-phone-alt"></i></a>
 
-                    {% endif %}
-                </td>
-                <td>
-                    {% if promotor.email %}
-                    <a href="mailto:{{promotor.email}}" class="btn btn-lg"><i class="fas fa-envelope"></i></a>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-<div class="col-md-6 p-5" id="events">
-    <h4>Events</h4>
-</div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if promotor.email %}
+                                <a href="mailto:{{promotor.email}}" class="btn btn-lg"><i
+                                        class="fas fa-envelope"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow-sm p-3 mb-5 bg-white rounded">
+            <div class="card-header">
+                <h4>Seating</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-responsive-md table-sm">
+                    <thead>
+                        <tr>
+                            <td>Type</td>
+                            <td>Compasity</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for seat in seats %}
+                        <tr>
+                            <td>{{seat.seating_type}}</td>
+                            <td>{{seat.seating}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow-sm p-3 mb-5 bg-white rounded">
+            <div class="card-header">
+                <h4>Events</h4>
+            </div>
+            <div class="card-body">
+                ...
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- People -->
