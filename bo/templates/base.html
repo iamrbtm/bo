@@ -21,6 +21,7 @@
     body {
       background-color: #fbf4e7;
     }
+
     .navbar-sub-customclass {
       background-color: #6A5325;
     }
@@ -45,7 +46,7 @@
 
     /* navigation links anchor hover and active styles */
     .navbar-customclass .nav-item.active .nav-link,
-    .navbar-customclass .nav-item:hover .nav-link, 
+    .navbar-customclass .nav-item:hover .nav-link,
     .navbar-sub-customclass .nav-item.active .nav-link,
     .navbar-sub-customclass .nav-item:hover .nav-link {
       color: #fbf4e7;
@@ -55,22 +56,20 @@
       color: rgba(255, 255, 255, .6);
     }
 
-    .nav-pills .nav-link{
+    .nav-pills .nav-link {
       color: #253C6A;
     }
-  
-  .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-      background-color:#6a312500
-  }
-  
-  
-    
+
+    .nav-pills .nav-link.active,
+    .nav-pills .show>.nav-link {
+      background-color: #6a312500
+    }
   </style>
   {% block style %}{% endblock %}
 </head>
 
 <body>
-  <nav class="navbar navbar-customclass navbar-fixed-top navbar-expand-md" >
+  <nav class="navbar navbar-customclass navbar-fixed-top navbar-expand-md">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">boxOffice</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample04"
@@ -80,11 +79,12 @@
 
       <div class="collapse navbar-collapse" id="navbarsExample04">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          {% if current_user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{url_for('client.clientlist')}}">Clients</a>
+            <a class="nav-link" href="{{url_for('promotor.promotorlist')}}">Promotors</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{url_for('venue.venuelist')}}">Venues</a>
@@ -93,11 +93,9 @@
         <div class="dropdown text-end">
           <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle text-light" id="dropdownUser1"
             data-bs-toggle="dropdown" aria-expanded="false">
-            {% if current_user.is_authenticated %}
             {% set fn = 'images/'+current_user.avatar_filename %}
             <img src="{{url_for('static', filename = fn)}}" alt="" width="30px" height="30px">
             {{current_user.firstname}} {{current_user.lastname}}
-            {% endif %}
           </a>
           <ul class="dropdown-menu text-small text-light" aria-labelledby="dropdownUser1">
             <li><a class="dropdown-item" href="{{url_for('views.profile')}}">Profile</a></li>
@@ -106,6 +104,14 @@
             <li><a class="dropdown-item" href="{{url_for('auth.logout')}}">Sign out</a></li>
           </ul>
         </div>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{url_for('auth.sign_up')}}">Sign Up</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{url_for('auth.login')}}">Log In</a>
+        </li>
+        {% endif %}
       </div>
     </div>
   </nav>
@@ -117,19 +123,20 @@
   {% if messages %}
   {% for category, message in messages %}
   {% if category == 'error' %}
-  <div class="alert alert-danger alter-dismissable fade show main" role="alert"
+  <div class="alert alert-danger alter-dismissable fade show" role="alert"
     style="position:fixed; top: 0px; left: 0px; width: 100%; z-index:9999; border: 5px groove #000000; border-radius: 40px 10px 40px 10px; font-size:20px; font-weight:bold">
     {{ message }}
-    <button type="button" class="close" data-dismiss="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   {% else %}
-  <div class="alert alert-success alter-dismissable fade show main" role="alert"
+  <div class="alert alert-success alter-dismissable fade show" role="alert"
     style="position:fixed; top: 0px; left: 0px; width: 100%; z-index:9999; border: 5px groove #000000; border-radius: 40px 10px 40px 10px; font-size:20px; font-weight:bold">
     {{ message }}
-    <button type="button" class="close" data-dismiss="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
+    </button>
   </div>
   {% endif %}
   {% endfor %}

@@ -1,7 +1,7 @@
-{% extends "clients/clients_sub.html" %}
+{% extends "promotors/promotors_sub.html" %}
 <!-- Title of the page (what goes on the tab when rendered) -->
 {% block title %}
-Clients
+promotors
 {% endblock %}
 
 <!-- Specific Style to this page -->
@@ -11,7 +11,7 @@ Clients
 <!-- Any Submenus go here -->
 {% block action_items %}
 <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Add New
-    Client</button>
+    promotor</button>
 {% endblock %}
 
 <!-- Additional Menu Items on the bottom nav bar -->
@@ -20,10 +20,10 @@ Clients
 
 <!-- Main Content -->
 {% block content %}
-Clients
+promotors
 
 <table class="table table-responsive-md table-sm border-secondary">
-    {% for item in clients %}
+    {% for item in promotors %}
     <tr>
         <td><strong>{{item.company}}</strong> <br>
             <span class="small">{{item.fname}} {{item.lname}}</span></td>
@@ -45,9 +45,9 @@ Clients
         </td>
         <td>{{item.email}}</td>
         <td>
-            <a class="btn text-primary" href="{{url_for('client.clientedit', id=item.id)}}"><i
+            <a class="btn text-primary" href="{{url_for('promotor.promotoredit', id=item.id)}}"><i
                     class="fas fa-edit"></i></a>
-            <a href="{{url_for('client.clientdelete', id=item.id)}}" class="btn text-danger"><i
+            <a href="{{url_for('promotor.promotordelete', id=item.id)}}" class="btn text-danger"><i
                     class="fas fa-trash-alt"></i></a>
         </td>
     </tr>
@@ -60,11 +60,11 @@ Clients
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add A New Client</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add A New promotor</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{url_for('client.clientlist')}}" method="post" class="row form-floating">
+                <form action="{{url_for('promotor.promotorlist')}}" method="post" class="row form-floating">
                     <div class="col-sm-12">
                         <label class="form-label" for="company">Company</label>
                         <input class="form-control" type="text" name="company" id="company">
@@ -109,17 +109,21 @@ Clients
                         <input class="form-control" type="tel" name="phone" id="phone">
                     </div>
                     <div class="col-sm-4">
+                        <label class="form-label" for="cell">Cell Number</label>
+                        <input class="form-control" type="tel" name="cell" id="cell">
+                    </div>
+                    <div class="col-sm-4">
                         <label class="form-label" for="fax">Fax Number</label>
                         <input class="form-control" type="tel" name="fax" id="fax">
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-12">
                         <label class="form-label" for="email">Email</label>
                         <input class="form-control" type="email" name="email" id="email">
                     </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Add Client</button>
+                <button type="submit" class="btn btn-primary">Add promotor</button>
                 </form>
             </div>
         </div>
@@ -127,37 +131,37 @@ Clients
 </div>
 
 <!-- Update Existing User -->
-{% for client in clients %}
+{% for promotor in promotors %}
 <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="updateModalLabel">Update Client</h5>
+                <h5 class="modal-title" id="updateModalLabel">Update promotor</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{url_for('client.clientlist')}}" method="post" class="row form-floating">
+                <form action="{{url_for('promotor.promotorlist')}}" method="post" class="row form-floating">
                     <input type="hidden" name="edit" , value="edit">
                     <div class="col-sm-12">
                         <label class="form-label" for="company">Company</label>
-                        <input class="form-control" type="text" name="company" id="company" value={{client.company}}>
+                        <input class="form-control" type="text" name="company" id="company" value={{promotor.company}}>
                     </div>
                     <div class="col-sm-6">
                         <label class="form-label" for="fname">First Name</label>
-                        <input class="form-control" type="text" name="fname" id="fname" value={{client.fname}}>
+                        <input class="form-control" type="text" name="fname" id="fname" value={{promotor.fname}}>
                     </div>
                     <div class="col-sm-6">
                         <label class="form-label" for="lname">Last Name</label>
-                        <input class="form-control" type="text" name="lname" id="lname" value={{client.lname}}>
+                        <input class="form-control" type="text" name="lname" id="lname" value={{promotor.lname}}>
                     </div>
                     <div class="col-sm-5">
                         <label class="form-label" for="address">Address</label>
-                        <input class="form-control" type="text" name="address" id="address" value={{client.address}}>
+                        <input class="form-control" type="text" name="address" id="address" value={{promotor.address}}>
                     </div>
                     <div class="col-sm-3">
                         <label class="form-label" for="city">City</label>
                         <input class="form-control" type="text" name="city" id="city" list="cities"
-                            value={{client.city}}>
+                            value={{promotor.city}}>
                         <datalist id="cities">
                             {% for city in cities %}
                             <option>{{city.city}}</option>
@@ -169,7 +173,7 @@ Clients
                             <label class="form-label" for="state">State</label>
                             <select id="state" class="form-control" name="state">
                                 {% for state in states %}
-                                {% if state.id == client.state %}
+                                {% if state.id == promotor.state %}
                                 <option selected value="{{state.id}}">{{state.abr}}-{{state.state}}</option>
                                 {% else %}
                                 <option value="{{state.id}}">{{state.abr}}-{{state.state}}</option>
@@ -181,24 +185,24 @@ Clients
                     </div>
                     <div class="col-sm-2">
                         <label class="form-label" for="zip">Zip</label>
-                        <input class="form-control" type="text" name="zip" id="zip" value={{client.zip}}>
+                        <input class="form-control" type="text" name="zip" id="zip" value={{promotor.zip}}>
                     </div>
                     <div class="col-sm-4">
                         <label class="form-label" for="phone">Phone Number</label>
-                        <input class="form-control" type="tel" name="phone" id="phone" value={{client.phone}}>
+                        <input class="form-control" type="tel" name="phone" id="phone" value={{promotor.phone}}>
                     </div>
                     <div class="col-sm-4">
                         <label class="form-label" for="fax">Fax Number</label>
-                        <input class="form-control" type="tel" name="fax" id="fax" value={{client.fax}}>
+                        <input class="form-control" type="tel" name="fax" id="fax" value={{promotor.fax}}>
                     </div>
                     <div class="col-sm-4">
                         <label class="form-label" for="email">Email</label>
-                        <input class="form-control" type="email" name="email" id="email" value={{client.email}}>
+                        <input class="form-control" type="email" name="email" id="email" value={{promotor.email}}>
                     </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Add Client</button>
+                <button type="submit" class="btn btn-primary">Add promotor</button>
                 </form>
             </div>
         </div>

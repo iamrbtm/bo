@@ -2,7 +2,7 @@
 <!-- Title of the page (what goes on the tab when rendered) -->
 {% block title %}
 {% for venue in venues %}
-{{venue.name}} clients
+{{venue.name}} Promotors
 {% endfor %}
 {% endblock %}
 
@@ -13,7 +13,8 @@
     Person</button>
 <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#seating">Add Seating
     Configuration</button>
-
+<button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#link_promotor">Link promotor To
+    Venue</button>
 <a href="{{url_for('venue.venuedelete', id = venue.id)}}" class="dropdown-item">Delete {{venue.name}}</a>
 {% endfor %}
 {% endblock %}
@@ -35,98 +36,95 @@
 {% endfor %}
 {% endfor %}
 
-<div class="card-group">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">People</h5>
-            <p class="card-text">
-                <table class="table table-responsive-md">
-                    <thead>
-                        <tr>
-                            <td>Name / Role</td>
-                            <td>Phone</td>
-                            <td>Email</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for people in peoples %}
-                        <tr>
-                            <td>
-                                {{people.fname}} {{people.lname}} <br>
-                                <span class="small text-muted">{{people.role}}</span>
-                            </td>
-                            <td>
-                                {% if people.phone %}
-                                <a href="tel:{{people.phone}}" class="btn btn-lg"><i class="fas fa-phone-alt"></i></a>
 
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if people.email %}
-                                <a href="mailto:{{people.email}}" class="btn btn-lg"><i class="fas fa-envelope"></i></a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </p>
-        </div>
-        <div class="card-footer">
-            <small class="text-muted">Last updated {{peoplelastupdate.strftime("%m-%d-%y %I:%M %p")}}</small>
-        </div>
-    </div>
-    <div class="card">
+<div class="d-flex flex-column bd-highlight mb-3" id="people">
+    <h4>People</h4>
+    <table class="table table-responsive-md">
+        <thead>
+            <tr>
+                <td>Name / Role</td>
+                <td>Phone</td>
+                <td>Email</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for people in peoples %}
+            <tr>
+                <td>
+                    {{people.fname}} {{people.lname}} <br>
+                    <span class="small text-muted">{{people.role}}</span>
+                </td>
+                <td>
+                    {% if people.phone %}
+                    <a href="tel:{{people.phone}}" class="btn btn-lg"><i class="fas fa-phone-alt"></i></a>
 
-        <div class="card-body">
-            <h5 class="card-title">Clients</h5>
-            <p class="card-text">
-                ...
-            </p>
-        </div>
-        <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-        </div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if people.email %}
+                    <a href="mailto:{{people.email}}" class="btn btn-lg"><i class="fas fa-envelope"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div id="Seating">
+        <h4 class="card-title">Seating</h4>
+        <table class="table table-responsive-md table-sm">
+            <thead>
+                <tr>
+                    <td>Type</td>
+                    <td>Compasity</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for seat in seats %}
+                <tr>
+                    <td>{{seat.seating_type}}</td>
+                    <td>{{seat.seating}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    <div class="card">
+</div>
+<div class="col-md-6 p-5" id="promotor">
+    <h4>Promotors</h4>
+    <table class="table table-responsive-md">
+        <thead>
+            <tr>
+                <th>Company & Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for promotor in promotors %}
+            <tr>
+                <td>
+                    <strong>{{promotor.company}}</strong> <br>
+                    <span class="small">{{promotor.fname}} {{promotor.lname}}</span>
+                </td>
+                <td>
+                    {% if promotor.phone %}
+                    <a href="tel:{{promotor.phone}}" class="btn btn-lg"><i class="fas fa-phone-alt"></i></a>
 
-        <div class="card-body">
-            <h5 class="card-title">Events</h5>
-            <p class="card-text">
-                ...
-            </p>
-        </div>
-        <div class="card-footer">
-            <small class="text-muted">Last updated 3 mins ago</small>
-        </div>
-    </div>
-    <div class="card">
-
-        <div class="card-body">
-            <h5 class="card-title">Seating</h5>
-            <p class="card-text">
-                <table class="table table-responsive-md table-sm">
-                    <thead>
-                        <tr>
-                            <td>Type</td>
-                            <td>Compasity</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for seat in seats %}
-                        <tr>
-                            <td>{{seat.seating_type}}</td>
-                            <td>{{seat.seating}}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </p>
-        </div>
-        <div class="card-footer">
-            <small class="text-muted">Last updated {{seatinglastupdate.strftime("%m-%d-%y %I:%M %p")}}</small>
-        </div>
-    </div>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if promotor.email %}
+                    <a href="mailto:{{promotor.email}}" class="btn btn-lg"><i class="fas fa-envelope"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="col-md-6 p-5" id="events">
+    <h4>Events</h4>
+</div>
 </div>
 
 <!-- People -->
@@ -204,6 +202,36 @@
             </form>
         </div>
     </div>
+</div>
+
+<!-- promotors -->
+<div class="modal fade" id="link_promotor" tabindex="-1" aria-labelledby="link_promotorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="link_promotorLabel">Link Promotor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <input type="hidden" name="linkpromotor" id="linkpromotor" value="linkpromotor">
+                    <label class="form-label" for="promotor"></label>
+                    <select class="form-control" name="promotor" id="promotor">
+                        {% for promotor in allpromotors %}
+                        <option value="{{promotor.id}}">{{promotor.company}} - {{promotor.fname}}
+                            {{promotor.lname}}
+                        </option>
+                        {% endfor %}
+                    </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Link Promotor</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 </div>
 {% endblock %}
 <!-- Scripts needed for this page -->

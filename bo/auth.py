@@ -15,7 +15,6 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
-                flash("Logged in!", category='success')
                 login_user(user, remember=True)
                 return redirect(url_for('views.home'))
             else:
@@ -33,6 +32,9 @@ def sign_up():
         username = request.form.get("username")
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
+        fname = request.form.get("fname")
+        lname = request.form.get("lname")
+
 
         email_exists = User.query.filter_by(email=email).first()
         username_exists = User.query.filter_by(username=username).first()
@@ -50,7 +52,7 @@ def sign_up():
         elif len(email) < 4:
             flash("Email is invalid.", category='error')
         else:
-            new_user = User(email=email, username=username, password=generate_password_hash(
+            new_user = User(email=email, username=username, fname=fname, lname=lname, password=generate_password_hash(
                 password1, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
@@ -65,4 +67,4 @@ def sign_up():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("views.home"))
+    return redirect(url_for("auth.login"))
