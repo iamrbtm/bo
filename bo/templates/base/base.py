@@ -7,15 +7,15 @@ from bo.models import *
 from bo import db, photos
 import datetime
 
-views = Blueprint("views", __name__)
+base = Blueprint("views", __name__)
 
-@views.route("/")
-@views.route("/home")
+@base.route("/")
+@base.route("/home")
 @login_required
 def home():
-    return render_template("home.html", user=User)
+    return render_template("base/home.html", user=User)
 
-@views.route("/profile", methods=['GET', 'POST'])
+@base.route("/profile", methods=['GET', 'POST'])
 @login_required
 def profile():
     if request.method == 'POST':
@@ -33,8 +33,8 @@ def profile():
         filename = photos.save(request.files['avatar'])
         updateusr.avatar_filename = filename
         db.session.commit()
-        return redirect(url_for('views.home'))
+        return redirect(url_for('base.home'))
 
     states = db.session.query(States).all()
     usr = db.session.query(User).filter(User.id == flask_login.current_user.id).first()
-    return render_template("profile.html", user=User, usr=usr, states=states)
+    return render_template("base/profile.html", user=User, usr=usr, states=states)

@@ -112,7 +112,7 @@ class Events(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     eventname = db.Column(db.String(100))
     event_start_datetime = db.Column(db.DateTime)
-    event_start_datetime = db.Column(db.DateTime)
+    event_end_datetime = db.Column(db.DateTime)
     event_onsale_datetime = db.Column(db.DateTime)
     # forign keys
     event_catagoryfk = db.Column(db.Integer, db.ForeignKey("eventcat.id"))

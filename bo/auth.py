@@ -16,13 +16,13 @@ def login():
         if user:
             if check_password_hash(user.password, password):
                 login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+                return redirect('http://127.0.0.1:5000/')
             else:
                 flash('Password is incorrect.', category='error')
         else:
             flash('Email does not exist.', category='error')
 
-    return render_template("login.html", user=User)
+    return render_template("base/login.html", user=User)
 
 
 @auth.route("/sign-up", methods=['GET', 'POST'])
@@ -60,7 +60,7 @@ def sign_up():
             flash('User created!')
             return redirect(url_for('views.home'))
 
-    return render_template("signup.html", user=current_user)
+    return render_template("base/signup.html", user=current_user)
 
 
 @auth.route("/logout")

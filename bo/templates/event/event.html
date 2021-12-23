@@ -21,6 +21,38 @@ Venues
 {% block content %}
 Events
 
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Event Name</th>
+            <th>Date</th>
+            <th>Promotor</th>
+            <th>Venue</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for event in allevents %}
+        <tr>
+            <td>{{event.eventname}}</td>
+            <td>{{event.event_start_datetime.strftime('%m/%d/%y')}}</td>
+            <td>
+                {% for pro in promotors %}
+                {% if pro.id == event.event_promotorfk %}
+                {{pro.company}}
+                {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                {% for venue in venues %}
+                    {% if venue.id == event.event_venuefk %}
+                        {{venue.name}}
+                    {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
 
 <!-- Scripts needed for this page -->
