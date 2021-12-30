@@ -33,7 +33,7 @@ def profile():
         filename = photos.save(request.files['avatar'])
         updateusr.avatar_filename = filename
         db.session.commit()
-        return redirect(url_for('base.home'))
+        return render_template('base/home.html')
 
     states = db.session.query(States).all()
     usr = db.session.query(User).filter(User.id == flask_login.current_user.id).first()

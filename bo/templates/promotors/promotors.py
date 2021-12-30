@@ -13,7 +13,7 @@ def promotorlist():
     if request.method == "POST":
         all = request.form.to_dict()
         promotor_add(**all)
-    promotorresults = db.session.query(Promotors).all()
+    promotorresults = db.session.query(Promotors).filter(Promotors.userid == current_user.id).all()
     states = db.session.query(States).all()
     cities = db.session.query(Promotors.city).order_by(Promotors.city).distinct()
     context = {
@@ -33,7 +33,7 @@ def promotoredit(id):
         print(all)
         promotor_edit(id, **all)
         return redirect(url_for("promotor.promotorlist"))
-    promotors = db.session.query(Promotors).filter_by(id=id).all()
+    promotors = db.session.query(Promotors).filter(Promotors.userid == current_user.id).filter_by(id=id).all()
     states = db.session.query(States).all()
     cities = (
         db.session.query(Promotors.city)

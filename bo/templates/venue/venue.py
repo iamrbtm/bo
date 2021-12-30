@@ -17,7 +17,7 @@ def venuelist():
         print(all)
         venue_add(**all)
 
-    venues = db.session.query(Venue).all()
+    venues = db.session.query(Venue).filter(Venue.userid == current_user.id).all()
     states = db.session.query(States).all()
     cities = (
         db.session.query(Venue.city).distinct(Venue.city).order_by(Venue.city).all()
@@ -31,7 +31,7 @@ def venuelist():
 def venuedelete(id):
     db.session.query(People).filter_by(venuefk=id).delete()
     db.session.query(SeatingCompasity).filter_by(venuefk=id).delete()
-    db.session.query(Venue).filter_by(id=id).delete()
+    db.session.query(Venue).filter(Venue.userid == current_user.id).filter_by(id=id).delete()
     db.session.commit()
     return redirect("venue.venuesingle", id=id)
 
@@ -59,6 +59,7 @@ def venuesingle(id):
         db.session.query(Promotors)
         .join(Promotor_Venue, Promotor_Venue.promotorfk == Promotors.id)
         .filter(Promotor_Venue.venuefk == id)
+        .filter(Venue.userid == current_user.id)
         .all()
     )
     states = db.session.query(States).all()

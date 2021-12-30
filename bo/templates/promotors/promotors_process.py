@@ -1,5 +1,3 @@
-import phonenumbers
-from phonenumbers import PhoneNumberFormat
 from bo import db
 from bo.models import *
 from flask_login import current_user
@@ -18,10 +16,11 @@ def promotor_add(
     fname, lname, company, address, city, state, zip, phone, cell, fax, email
 ):
     cnt = (
-        db.session.query(promotors)
-        .filter(promotors.fname == fname)
-        .filter(promotors.lname == lname)
-        .filter(promotors.company == company)
+        db.session.query(Promotors)
+        .filter(Promotors.fname == fname)
+        .filter(Promotors.lname == lname)
+        .filter(Promotors.company == company)
+        .filter(Promotors.userid == current_user.id)
         .count()
     )
 
@@ -30,7 +29,7 @@ def promotor_add(
         fmtfax = format_tel(fax)
         fmtcell = format_tel(cell)
 
-        new = promotors(
+        new = Promotors(
             fname=fname.title(),
             lname=lname.title(),
             company=company.title(),
@@ -51,14 +50,14 @@ def promotor_add(
 
 
 def promotor_delete(id):
-    db.session.query(promotors).filter(promotors.id == id).delete()
+    db.session.query(Promotors).filter(Promotors.userid == current_user.id).filter(Promotors.id == id).delete()
     db.session.commit()
 
 
 def promotor_edit(
     id, fname, lname, company, address, city, state, zip, phone, cell, fax, email
 ):
-    promotor = db.session.query(promotors).filter_by(id=id).first()
+    promotor = db.session.query(Promotors).filter(Promotors.userid == current_user.id).filter_by(id=id).first()
     if phone != promotor.phone:
         fmtphone = format_tel(phone)
     else:

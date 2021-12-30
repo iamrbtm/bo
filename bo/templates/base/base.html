@@ -95,8 +95,13 @@
         <div class="dropdown text-end">
           <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle text-light" id="dropdownUser1"
             data-bs-toggle="dropdown" aria-expanded="false">
+            {% if current_user.avatar_url %}
+            {% set fn = current_user.avatar_url %}
+            <img src="{{fn}}" alt="" width="40px" height="40px" class="rounded-circle">
+            {% else %}
             {% set fn = 'images/'+current_user.avatar_filename %}
-            <img src="{{url_for('static', filename = fn)}}" alt="" width="40px" height="40px">
+            <img src="{{url_for('static', filename = fn)}}" alt="" width="40px" height="40px" class="rounded-circle">
+            {% endif %}
             {{current_user.firstname}} {{current_user.lastname}}
           </a>
           <ul class="dropdown-menu text-small text-light" aria-labelledby="dropdownUser1">

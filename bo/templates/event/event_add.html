@@ -1,0 +1,140 @@
+{% extends "event/event_sub.html" %}
+<!-- Title of the page (what goes on the tab when rendered) -->
+{% block title %}
+Add Venue
+{% endblock %}
+
+<!-- Specific Style to this page -->
+{% block style %}
+{% endblock %}
+
+<!-- Any Submenus go here -->
+{% block action_items %}
+<button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addcatagory">Add Event
+    Catagory</button>
+
+{% endblock %}
+
+<!-- Additional Menu Items on the bottom nav bar -->
+{% block additional_menuitems %}
+{% endblock %}
+
+<!-- Main Content -->
+{% block content %}
+Add Event
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-tour-tab" data-bs-toggle="tab" data-bs-target="#nav-tour" type="button"
+            role="tab" aria-controls="nav-tour" aria-selected="false">Tour</button>
+        <button class="nav-link" id="nav-flyin-tab" data-bs-toggle="tab" data-bs-target="#nav-flyin" type="button"
+            role="tab" aria-controls="nav-flyin" aria-selected="true">Fly In Date</button>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active shadow p-3 mb-5 bg-body rounded" id="nav-tour" role="tabpanel"
+        aria-labelledby="nav-tour-tab">
+        id="eventname" id="event_start_datetime" id="event_end_datetime" id="event_onsale_datetime"
+        id="event_catagoryfk" id="event_venuefk" id="event_promotorfk" id="event_artistfk" id="event_tourfk
+
+    </div>
+    <div class="tab-pane fade shadow p-3 mb-5 bg-body rounded" id="nav-flyin" role="tabpanel"
+        aria-labelledby="nav-flyin-tab">
+        <form method="post">
+            <div class="row g-2">
+                <div class="col-md-8">
+                    <div class="form-floating">
+                        <input id="eventname" class="form-control" type="text" name="eventname" placeholder="eventname">
+                        <label for="eventname">Event Name</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select" id="event_catagoryfk" name="event_catagoryfk">
+                            <option selected>Open this select menu</option>
+                            {% for cat in catagories %}
+                            <option value="{{cat.id}}">{{cat.catagory}}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="event_catagoryfk">Catagory</label>
+                    </div>
+                </div>
+                <h6>Dates</h6>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input id="event_start_datetime" class="form-control" type="datetime"
+                            name="event_start_datetime" placeholder="event_start_datetime">
+                        <label for="event_start_datetime">Start Date Time</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input id="event_end_datetime" class="form-control" type="datetime" name="event_end_datetime"
+                            placeholder="event_end_datetime">
+                        <label for="event_end_datetime">End Date Time</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <input id="event_onsale_datetime" class="form-control" type="datetime"
+                            name="event_onsale_datetime" placeholder="event_onsale_datetime">
+                        <label for="event_onsale_datetime">On Sale Date Time</label>
+                    </div>
+                </div>
+                <h6>Clients</h6>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <select class="form-select" id="event_venuefk" name="event_venuefk">
+                            <option selected>Please Select A Venue</option>
+                            {% for venue in venues %}
+                            <option value="{{venue.id}}">{{venue.name}} - <span class="small">{{venue.city}}</span>
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <label for="event_venuefk">Select A Venue</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <select class="form-select" id="event_venuefk" name="event_venuefk">
+                            <option selected>Please Select A Promotor</option>
+                            {% for prom in promotors %}
+                            <option value="{{prom.id}}">{{prom.company}} - <span>{{prom.fname}} {{prom.lname}}</span></option>
+                            {% endfor %}
+                        </select>
+                        <label for="event_venuefk">Select A Promotor</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+        id="" id="" id="event_promotorfk" id="event_artistfk"
+
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="addcatagory" tabindex="-1" aria-labelledby="addcatagoryLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addcatagoryLabel">Add Event Catagory</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-floating" method="POST">
+                    <input type="text" class="form-control" id="catagory" name="add_catagory" placeholder="catagory">
+                    <label for="catagory">Catagory</label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<!-- Scripts needed for this page -->
+{% block scripts %}
+{% endblock %}

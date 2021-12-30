@@ -2,6 +2,7 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 import datetime
+from sqlalchemy.orm import backref, relationship
 from sqlalchemy import ForeignKey
 
 
@@ -18,6 +19,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True)
     dob = db.Column(db.Date)
     avatar_filename = db.Column(db.Text)
+    avatar_url = db.Column(db.String(250))
     username = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
@@ -48,12 +50,14 @@ class Promotors(db.Model):
         db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now
     )
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
+    #relationship
+    promotor_venue = db.relationship("Promotor_Venue", backref='prom')
 
 
 class Promotor_Venue(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    promotorfk = db.Column(db.Integer)
-    venuefk = db.Column(db.Integer)
+    promotorfk = db.Column(db.Integer, db.ForeignKey("promotors.id", ondelete='CASCADE'))
+    venuefk = db.Column(db.Integer, db.ForeignKey("venue.id", ondelete='CASCADE'))
     userid = db.Column(db.Integer)
     update_time = db.Column(
         db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now
@@ -76,6 +80,8 @@ class Venue(db.Model):
         db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now
     )
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
+    #relationship
+    promotor_venue = db.relationship("Promotor_Venue", backref='venue')
 
 
 class SeatingCompasity(db.Model):
@@ -118,16 +124,53 @@ class Events(db.Model):
     event_catagoryfk = db.Column(db.Integer, db.ForeignKey("eventcat.id"))
     event_venuefk = db.Column(db.Integer, db.ForeignKey("venue.id"))
     event_promotorfk = db.Column(db.Integer, db.ForeignKey("promotors.id"))
+    event_artistfk = db.Column(db.Integer, db.ForeignKey("artist.id"))
+    event_tourfk = db.Column(db.Integer, db.ForeignKey("tour.id"))
     userid = db.Column(db.Integer)
     update_time = db.Column(
         db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now
     )
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
-   
-    
+
+
 class Eventcat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     catagory = db.Column(db.String(100))
+    userid = db.Column(db.Integer)
+    update_time = db.Column(
+        db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now
+    )
+    date_created = db.Column(db.DateTime(timezone=True), default=func.now())
+
+class Tour(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tourname = db.Column(db.String(150))
+    headliner1 = db.Column(db.Integer, db.ForeignKey("artist.id"))
+    headliner2 = db.Column(db.Integer, db.ForeignKey("artist.id"))
+    headliner3 = db.Column(db.Integer, db.ForeignKey("artist.id"))
+    opener1 = db.Column(db.Integer, db.ForeignKey("artist.id"))
+    opener2 = db.Column(db.Integer, db.ForeignKey("artist.id"))
+    opener3 = db.Column(db.Integer, db.ForeignKey("artist.id"))
+    opener4 = db.Column(db.Integer, db.ForeignKey("artist.id"))
+    opener5 = db.Column(db.Integer, db.ForeignKey("artist.id"))
+    tour_banner_filename = db.Column(db.String(100))
+    tour_banner_url = db.Column(db.String(200))
+    tour_banner_note = db.Column(db.Text)
+    tour_artwork1_filename = db.Column(db.String(100))
+    tour_artwork1_url = db.Column(db.String(200))
+    tour_artwork1_note = db.Column(db.Text)
+    tour_artwork2_filename = db.Column(db.String(100))
+    tour_artwork2_url = db.Column(db.String(200))
+    tour_artwork2_note = db.Column(db.Text)
+    tour_artwork3_filename = db.Column(db.String(100))
+    tour_artwork3_url = db.Column(db.String(200))
+    tour_artwork3_note = db.Column(db.Text)
+    tour_artwork4_filename = db.Column(db.String(100))
+    tour_artwork4_url = db.Column(db.String(200))
+    tour_artwork4_note = db.Column(db.Text)
+    tour_artwork5_filename = db.Column(db.String(100))
+    tour_artwork5_url = db.Column(db.String(200))
+    tour_artwork5_note = db.Column(db.Text)
     userid = db.Column(db.Integer)
     update_time = db.Column(db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
@@ -137,7 +180,9 @@ class Artistcat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     catagory = db.Column(db.String(100))
     userid = db.Column(db.Integer)
-    update_time = db.Column(db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+    update_time = db.Column(
+        db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now
+    )
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
 
 
@@ -146,13 +191,32 @@ class Artist(db.Model):
     artist_name = db.Column(db.String(100))
     artist_band = db.Column(db.Boolean)
     artist_solo = db.Column(db.Boolean)
-    artist_picture_filename = db.Column(db.String(100))
+    artist_banner_filename = db.Column(db.String(100))
+    artist_banner_url = db.Column(db.String(200))
+    artist_artwork1_filename = db.Column(db.String(100))
+    artist_artwork1_url = db.Column(db.String(200))
+    artist_artwork1_note = db.Column(db.Text)
+    artist_artwork2_filename = db.Column(db.String(100))
+    artist_artwork2_url = db.Column(db.String(200))
+    artist_artwork2_note = db.Column(db.Text)
+    artist_artwork3_filename = db.Column(db.String(100))
+    artist_artwork3_url = db.Column(db.String(200))
+    artist_artwork3_note = db.Column(db.Text)
+    artist_artwork4_filename = db.Column(db.String(100))
+    artist_artwork4_url = db.Column(db.String(200))
+    artist_artwork4_note = db.Column(db.Text)
+    artist_artwork5_filename = db.Column(db.String(100))
+    artist_artwork5_url = db.Column(db.String(200))
+    artist_artwork5_note = db.Column(db.Text)
     userid = db.Column(db.Integer)
-    update_time = db.Column(db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
+    update_time = db.Column(
+        db.DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now
+    )
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
-    #forign key
+    # forign key
     artist_catagoryfk = db.Column(db.Integer, db.ForeignKey("artistcat.id"))
-    
+
+
 # class <name>(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
 

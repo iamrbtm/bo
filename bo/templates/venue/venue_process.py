@@ -3,14 +3,7 @@ from bo.models import *
 from flask_login import current_user
 from flask import flash
 import validators
-
-
-def format_tel(phone):
-    if phone != "":
-        phone = phone.replace("-", "")
-        return format(int(phone[:-1]), ",").replace(",", "-") + phone[-1]
-    else:
-        return ""
+from bo.utilities import format_tel
 
 
 def venue_add(name, address, city, state, zip, phone, website, loadinst):
