@@ -3,6 +3,7 @@ Flask-Login
 Flask-SQLAlchemy
 Flask-Migrate
 Flask-Uploads
+Flask-Mail
 requests
 validators
 flask_debugtoolbar
