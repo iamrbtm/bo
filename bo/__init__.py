@@ -6,12 +6,14 @@ from flask_migrate import Migrate
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_uploads import UploadSet, configure_uploads, IMAGES, ALL
 from dotenv import load_dotenv
+from flask_mail import Mail
 
 load_dotenv()
 
 db = SQLAlchemy()
 photos = UploadSet("photos", IMAGES)
 uploads = UploadSet("uploads", ALL)
+mail = Mail()
 
 def create_app():
     app = Flask(__name__)
@@ -27,12 +29,22 @@ def create_app():
     app.config[
         "SQLALCHEMY_DATABASE_URI"
     ] = f"mysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
-
+    
+    #Mail Setup
+    app.config["MAIL_SERVER"] = os.environ.get('MAIL_SMTP_SERVER')
+    app.config["MAIL_USE_SSL"] = True  
+    app.config["MAIL_PORT"] = os.environ.get('MAIL_SMTP_PORT')
+    app.config["MAIL_USERNAME"] = os.environ.get('MAIL_USERNAME')
+    app.config["MAIL_PASSWORD"] = os.environ.get('MAIL_PASSWORD')
+    
+    #Debug Toolbar
     toolbar = DebugToolbarExtension(app)
     app.config["DEBUG_TB_INTERCEPT_REDIRECTS"] = False
 
     db.init_app(app)
-
+    
+    mail.init_app(app)
+    
     Migrate(app, db)
 
     from bo.templates.base.base import base

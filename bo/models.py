@@ -1,7 +1,7 @@
-from . import db
+from bo import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
-import datetime
+import datetime, os
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy import ForeignKey
 
@@ -24,12 +24,10 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     date_created = db.Column(db.DateTime(timezone=True), default=func.now())
 
-
 class States(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     state = db.Column(db.String(50))
     abr = db.Column(db.String(2))
-
 
 class Promotors(db.Model):
     id = db.Column(db.Integer, primary_key=True)

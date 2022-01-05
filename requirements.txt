@@ -5,3 +5,7 @@ Flask-Migrate
 Flask-Uploads
 requests
 validators
+flask_debugtoolbar
+python-dotenv
+mysqlclient
+selenium

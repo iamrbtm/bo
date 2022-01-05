@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, redirect, request
 from flask.helpers import url_for
 from flask_login.utils import login_required
+from bo import mail
 from bo.models import *
 from bo.templates.venue.venue_process import *
 from bo.templates.people.people_process import *
+from flask_mail import Message
 
 
 venue = Blueprint("venue", __name__)
@@ -16,8 +18,11 @@ def venuelist():
         all = request.form.to_dict()
         print(all)
         venue_add(**all)
+    
+    msg = Message(subject="Venue", body = "I am in Venue", recipients=["rbtm2006@me.com"], sender="jeremy@jeremyguill.com")
+    mail.send(msg)
 
-    venues = db.session.query(Venue).filter(Venue.userid == current_user.id).all()
+    venues = db.session.query(Venue).filter(Venue.userid == current_user.id).order_by(Venue.name).all()
     states = db.session.query(States).all()
     cities = (
         db.session.query(Venue.city).distinct(Venue.city).order_by(Venue.city).all()
@@ -100,3 +105,10 @@ def venuesingle(id):
         "promotorlastupdate": promotorlastupdate,
     }
     return render_template("venue/venue_single.html", **context)
+
+@venue.route("/scrape")
+@login_required
+def scrape():
+    from bo.scrapevenues import scrapevenue
+    scrapevenue()
+    return redirect(url_for('venue.venuelist'))
