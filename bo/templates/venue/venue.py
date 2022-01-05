@@ -18,9 +18,6 @@ def venuelist():
         all = request.form.to_dict()
         print(all)
         venue_add(**all)
-    
-    msg = Message(subject="Venue", body = "I am in Venue", recipients=["rbtm2006@me.com"], sender="jeremy@jeremyguill.com")
-    mail.send(msg)
 
     venues = db.session.query(Venue).filter(Venue.userid == current_user.id).order_by(Venue.name).all()
     states = db.session.query(States).all()
